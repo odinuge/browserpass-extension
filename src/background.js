@@ -912,7 +912,8 @@ async function parseFields(settings, login) {
         login: ["login", "username", "user"],
         openid: ["openid"],
         otp: ["otp", "totp", "hotp"],
-        url: ["url", "uri", "website", "site", "link", "launch"]
+        url: ["url", "uri", "website", "site", "link", "launch"],
+        browserpass_fields: {}
     };
     login.settings = {
         autoSubmit: { name: "autosubmit", type: "bool" }
@@ -951,6 +952,12 @@ async function parseFields(settings, login) {
                 }
                 break;
             }
+        }
+        // Parse custom fields
+        const fieldRegexp = /browserpass_field_(.*)/;
+        const fieldResult = fieldRegexp.exec(parts[0]);
+        if (fieldResult && fieldResult.length > 1) {
+            login.fields.browserpass_fields[fieldResult[1]] = parts[1];
         }
 
         // assign to settings

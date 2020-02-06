@@ -151,6 +151,16 @@
             result.filledFields.push("openid");
         }
 
+        // fill fields with key "browserpass_field_X" into input with name X
+        Object.keys(request.login.fields.browserpass_fields).forEach(key => {
+            const CUSTOM_FIELDS = {
+                selectors: [`input[name="${key}"]`]
+            };
+            if (update(CUSTOM_FIELDS, request.login.fields.browserpass_fields[key], loginForm)) {
+                result.filledFields.push(key);
+            }
+        });
+
         // finished filling things successfully
         return result;
     }
